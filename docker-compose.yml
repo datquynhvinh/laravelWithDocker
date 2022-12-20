@@ -1,65 +1,50 @@
-version: '3'
+version: "3.7"
 services:
-
-  #PHP Service
   app:
     build:
-      context: .
+      args:
+        user: sammy
+        uid: 1000
+      context: ./
       dockerfile: Dockerfile
-    image: digitalocean.com/php
-    container_name: app
+    image: travellist
+    container_name: travellist-app
     restart: unless-stopped
-    tty: true
-    environment:
-      SERVICE_NAME: app
-      SERVICE_TAGS: dev
-    working_dir: /var/www
+    working_dir: /var/www/
     volumes:
       - ./:/var/www
-      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - app-network
+      - travellist
 
-  #Nginx Service
-  webserver:
-    image: nginx:alpine
-    container_name: webserver
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "800:80"
-      - "443:443"
-    volumes:
-      - ./:/var/www
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
-    networks:
-      - app-network
-
-  #MySQL Service
   db:
-    image: mysql:5.7.22
-    container_name: db
-    restart: unless-stopped
-    tty: true
+    image: mysql:5.7
+    container_name: travellist-db
     ports:
-      - "30000:3306"
+      - "3308:3306"
+    restart: always
     environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: admin
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:
-      - dbdata:/var/lib/mysql/
-      - ./mysql/my.cnf:/etc/mysql/my.cnf
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
     networks:
-      - app-network
+      - travellist
 
-#Docker Networks
+  nginx:
+    image: nginx:alpine
+    container_name: travellist-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - travellist
+
 networks:
-  app-network:
+  travellist:
     driver: bridge
-#Volumes
-volumes:
-  dbdata:
-    driver: local
