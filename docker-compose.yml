@@ -3,7 +3,7 @@ services:
   app:
     build:
       args:
-        user: sammy
+        user: datquynhvinh
         uid: 1000
       context: ./
       dockerfile: Dockerfile
@@ -16,15 +16,18 @@ services:
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - app-network
+    links:
+      - db
 
   db:
     image: mysql:5.7
-    container_name: mysqldb
+    container_name: db
     ports:
       - "3308:3306"
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_USER: ${DB_USERNAME}
       SERVICE_TAGS: dev
