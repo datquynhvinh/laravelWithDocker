@@ -7,18 +7,19 @@ services:
         uid: 1000
       context: ./
       dockerfile: Dockerfile
-    image: travellist
-    container_name: travellist-app
+    image: laravel-docker
+    container_name: app
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
       - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - travellist
+      - app-network
 
   db:
     image: mysql:5.7
-    container_name: travellist-db
+    container_name: mysqldb
     ports:
       - "3308:3306"
     restart: always
@@ -29,22 +30,27 @@ services:
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:
-      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
-      - travellist
+      - app-network
 
-  nginx:
+  webserver:
     image: nginx:alpine
-    container_name: travellist-nginx
+    container_name: webserver
+    tty: true
     restart: unless-stopped
     ports:
       - 8000:80
     volumes:
       - ./:/var/www
-      - ./docker-compose/nginx:/etc/nginx/conf.d/
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
     networks:
-      - travellist
+      - app-network
 
 networks:
-  travellist:
+  app-network:
     driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
