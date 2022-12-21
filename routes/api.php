@@ -20,11 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('users')->name('users.')->group(function(){
-    Route::get('/', [UserController::class, 'index'])->name('index');
-    Route::get('/{user}', [UserController::class, 'getUserDetail'])->name('detail');
+    Route::get('/list-users', [UserController::class, 'getUsers'])->name('list-users');
+    Route::get('/{id}', [UserController::class, 'getUserDetail'])->name('detail');
     Route::post('/create', [UserController::class, 'createUser'])->name('create');
-    Route::put('/{user}', [UserController::class, 'updateUser'])->name('update');
-    Route::delete('/{user}', [UserController::class, 'deleteUser'])->name('delete');
+    Route::put('/{id}', [UserController::class, 'updateUser'])->name('update');
+    Route::delete('/{id}', [UserController::class, 'deleteUser'])->name('delete');
 });
 
 Route::prefix('products')->name('products.')->group(function(){

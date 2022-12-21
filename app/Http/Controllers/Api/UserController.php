@@ -5,43 +5,116 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    public function getUsers()
     {
-        return 'All users';
+        $user = User::all();
+        $response = [
+            'status' => 'success',
+            'data' => $user
+        ];
+
+        return $response;
     }
     
-    public function getUserDetail(User $user)
+    public function getUserDetail($id)
     {
-        return 'User ' . $user;
+        $user = User::find($id);
+
+        if (!empty($user)) {
+            return [
+                'status' => 'success',
+                'data' => $user
+            ];
+        }
+
+        return [
+            'status' => 'fail',
+            'data' => []
+        ];
     }
 
-    public function createUser(Request $request, User $user)
+    public function createUser(Request $request)
     {
-        // $rule = [
-        //     'name' => 'required|min:5',
-        //     'email' => 'required|email|unique:users',
-        //     'password' => 'required|min:8',
-        // ];
+        $this->validation($request);
+        $user = new User;
+
+        $createUser = $user->create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        if (!$createUser) {
+            return [
+                'msg' => 'Fail'
+            ];
+        }
+        return [
+            'msg' => 'Success'
+        ];
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $this->validation($request);
+        $user = new User;
+
+        $updateUser = $user->updateOrCreate(
+            [
+                'id' => $id, 
+            ],
+            [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]
+        );
+
+        if ($updateUser) {
+            return [
+                'msg' => 'Success'
+            ];
+        }
+        return [
+            'msg' => 'Fail'
+        ];
+    }
+
+    public function deleteUser($id)
+    {
+        $deleteUser = User::destroy($id);
+        if ($deleteUser) {
+            return [
+                'msg' => 'Success'
+            ];
+        }
+        return [
+            'msg' => 'Fail'
+        ];
+    }
+
+    private function validation($request)
+    {
+        $rule = [
+            'name' => 'required|min:5',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8',
+        ];
     
-        // $message = [
-        //     'name.required' => "Ten bat buoc phai nhap",
-        //     'name.min' => "Ten phai lon hon :min ki tu",
-        //     'email.required' => "Email bat buoc phai nhap",
-        //     'email.email' => "Email khong dung dinh dang",
-        //     'email.unique' => "Email da ton tai",
-        //     'password.required' => "Ten bat buoc phai nhap",
-        //     'password.min' => "Ten phai lon hon :min ki tu",
-        // ];
+        $message = [
+            'name.required' => "Ten bat buoc phai nhap",
+            'name.min' => "Ten phai lon hon :min ki tu",
+            'email.required' => "Email bat buoc phai nhap",
+            'email.email' => "Email khong dung dinh dang",
+            'email.unique' => "Email da ton tai",
+            'password.required' => "Password bat buoc phai nhap",
+            'password.min' => "Password phai lon hon :min ki tu",
+        ];
 
-        // $request->validate($rule, $message);
-        dd($user->find(1));
-    }
-
-    public function updateUser(Request $request)
-    {
-        return $request->all();
+        $request->validate($rule, $message);
     }
 }
