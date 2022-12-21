@@ -20,25 +20,24 @@ class UserController extends Controller
 
     public function createUser(Request $request, User $user)
     {
-        dd($user->find(1));
-        $rule = [
-            'name' => 'required|min:5',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8',
-        ];
+        // $rule = [
+        //     'name' => 'required|min:5',
+        //     'email' => 'required|email|unique:users',
+        //     'password' => 'required|min:8',
+        // ];
     
-        $message = [
-            'name.required' => "Ten bat buoc phai nhap",
-            'name.min' => "Ten phai lon hon :min ki tu",
-            'email.required' => "Email bat buoc phai nhap",
-            'email.email' => "Email khong dung dinh dang",
-            'email.unique' => "Email da ton tai",
-            'password.required' => "Ten bat buoc phai nhap",
-            'password.min' => "Ten phai lon hon :min ki tu",
-        ];
+        // $message = [
+        //     'name.required' => "Ten bat buoc phai nhap",
+        //     'name.min' => "Ten phai lon hon :min ki tu",
+        //     'email.required' => "Email bat buoc phai nhap",
+        //     'email.email' => "Email khong dung dinh dang",
+        //     'email.unique' => "Email da ton tai",
+        //     'password.required' => "Ten bat buoc phai nhap",
+        //     'password.min' => "Ten phai lon hon :min ki tu",
+        // ];
 
-        $request->validate($rule, $message);
-        dd(1);
+        // $request->validate($rule, $message);
+        dd($user->find(1));
     }
 
     public function updateUser(Request $request)
