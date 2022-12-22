@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 
 /*
@@ -21,21 +23,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->get('token', [AuthController::class, 'getToken']);
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
+Route::post('refresh-token', [AuthController::class, 'refreshToken']);
 
-Route::middleware('auth:sanctum')->prefix('users')->name('users.')->group(function(){
-    Route::get('/list-users', [UserController::class, 'getUsers'])->name('list-users');
-    Route::get('/{id}', [UserController::class, 'getUserDetail'])->name('detail');
-    Route::post('/create', [UserController::class, 'createUser'])->name('create');
-    Route::put('/{id}', [UserController::class, 'updateUser'])->name('update');
-    Route::delete('/{id}', [UserController::class, 'deleteUser'])->name('delete');
+Route::post('/users/create', [UserController::class, 'createUser']);
+Route::middleware('auth:api')->prefix('users')->group(function(){
+    Route::get('/list-users', [UserController::class, 'getUsers']);
+    Route::get('/{id}', [UserController::class, 'getUserDetail']);
+    Route::put('/{id}', [UserController::class, 'updateUser']);
+    Route::delete('/{id}', [UserController::class, 'deleteUser']);
 });
 
 Route::prefix('products')->name('products.')->group(function(){
-    Route::get('/', [ProductsController::class, 'index'])->name('index');
-    Route::get('/{id}', [ProductsController::class, 'detail'])->name('show');
-    Route::post('/create', [ProductsController::class, 'post'])->name('post');
-    Route::put('/{id}', [ProductsController::class, 'update'])->name('update');
-    Route::patch('/{id}', [ProductsController::class, 'patch'])->name('patch');
-    Route::delete('/{id}', [ProductsController::class, 'delete'])->name('delete');
+    Route::get('/', [ProductsController::class, 'index']);
+    Route::get('/{id}', [ProductsController::class, 'detail']);
+    Route::post('/create', [ProductsController::class, 'post']);
+    Route::put('/{id}', [ProductsController::class, 'update']);
+    Route::patch('/{id}', [ProductsController::class, 'patch']);
+    Route::delete('/{id}', [ProductsController::class, 'delete']);
 });

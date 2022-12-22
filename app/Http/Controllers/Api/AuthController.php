@@ -2,53 +2,63 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Laravel\Passport\Client;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
-    use HasApiTokens;
-
     public function login(Request $request)
     {
-        $checkLogin =  Auth::attempt([
+        $checkLogin = Auth::attempt([
             'email' => $request->email,
             'password' => $request->password,
         ]);
-        $token = null;
 
         if ($checkLogin) {
-            $authUser = Auth::user();
-            $user = User::find($authUser->id);
-            $token = $user->createToken('auth_token')->plainTextToken;
-            $status = 200;
-        } else {
-            $status = 400;
+            $client = Client::where('password_client', 1)->first();
+            if ($client) {
+                $response = Http::asForm()->post('http://127.0.0.1:8002/oauth/token', [
+                    'grant_type' => 'password',
+                    'client_id' => $client->id,
+                    'client_secret' => $client->secret,
+                    'username' => $request->email,
+                    'password' => $request->password,
+                    'scope' => '',
+                ]);
+
+                return $response;
+            }
         }
 
         return [
-            'status' => $status,
-            'token' => $token
+            'message' => 'fail'
         ];
     }
 
     public function logout(Request $request)
     {
-        if (!empty($request->user()->currentAccessToken())) {
-            $request->user()->currentAccessToken()->delete();
-
-            return [
-                'status' => 200,
-                'message' => 'success'
-            ];
-        }
+        $request->user()->token()->revoke();
 
         return [
-            'status' => 400,
-            'message' => 'fail'
+            'status' => 200,
+            'message' => 'success'
         ];
+    }
+
+    public function refreshToken(Request $request)
+    {
+        $client = Client::where('password_client', 1)->first();
+        $response = Http::asForm()->post('http://127.0.0.1:8002/oauth/token', [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $request->token,
+            'client_id' => $client->id,
+            'client_secret' => $client->secret,
+            'scope' => '',
+        ]);
+
+        return $response;
     }
 }
