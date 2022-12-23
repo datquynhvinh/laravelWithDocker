@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('post_login') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -65,6 +65,15 @@
                             </div>
                         </div>
                     </form>
+                    <div class="row mt-3">
+                        <div class="offset-md-4">
+                            <div class="form-check">
+                                <a class="form-check-label" href="{{ route('fb_login', ['platform' => 'facebook']) }}">
+                                    {{ __('Login With FB') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

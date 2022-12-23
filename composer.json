@@ -12,6 +12,7 @@
         "laravel/framework": "^8.75",
         "laravel/passport": "^10.4",
         "laravel/sanctum": "^2.15",
+        "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^3.4"
     },

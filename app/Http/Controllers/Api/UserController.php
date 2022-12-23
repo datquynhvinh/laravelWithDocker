@@ -105,7 +105,7 @@ class UserController extends Controller
     {
         $rule = [
             'name' => 'required|min:5',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email',
             'password' => 'required|min:8',
         ];
     
@@ -114,7 +114,6 @@ class UserController extends Controller
             'name.min' => "Ten phai lon hon :min ki tu",
             'email.required' => "Email bat buoc phai nhap",
             'email.email' => "Email khong dung dinh dang",
-            'email.unique' => "Email da ton tai",
             'password.required' => "Password bat buoc phai nhap",
             'password.min' => "Password phai lon hon :min ki tu",
         ];
