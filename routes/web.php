@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Social\SocialController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +17,10 @@ use App\Http\Controllers\Auth\LoginController;
 |
 */
 
-Route::get('/login', [LoginController::class, 'getLogin'])->name('get_login');
-Route::post('/login', [LoginController::class, 'postLogin'])->name('post_login');
+Route::get('/register', [RegisterController::class, 'getRegister'])->name('register');
+Route::post('/register', [RegisterController::class, 'postRegister'])->name('register');
+Route::get('/login', [LoginController::class, 'getLogin'])->name('login');
+Route::post('/login', [LoginController::class, 'postLogin'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/', [HomeController::class, 'index'])->name('dashboard');
