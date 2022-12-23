@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -41,11 +42,24 @@ class LoginController extends Controller
     
     public function getLogin()
     {
+        if (Auth::check()) {
+            return redirect('/');
+        }
+
         return view('auth.login');
     }
 
     public function postLogin(Request $request)
     {
-        dd(1);
+        $checkLogin = Auth::attempt([
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+
+        if ($checkLogin) {
+            return redirect('/');
+        } else {
+            return redirect()->back()->with('status', 'Email hoặc Password không chính xác');
+        }
     }
 }

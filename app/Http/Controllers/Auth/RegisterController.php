@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -54,6 +56,17 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ],
+        [
+            'name.required' => 'Họ và tên là trường bắt buộc',
+            'name.max' => 'Họ và tên không quá :max ký tự',
+            'email.required' => 'Email là trường bắt buộc',
+            'email.email' => 'Email không đúng định dạng',
+            'email.max' => 'Email không quá :max ký tự',
+            'email.unique' => 'Email đã tồn tại',
+            'password.required' => 'Mật khẩu là trường bắt buộc',
+            'password.min' => 'Mật khẩu phải chứa ít nhất :min ký tự',
+            'password.confirmed' => 'Xác nhận mật khẩu không đúng',
         ]);
     }
 
@@ -79,8 +92,22 @@ class RegisterController extends Controller
 
     public function postRegister(Request $request)
     {
-        /**
-         * TODO
-         */
+        $validator = $this->validator($request->all());
+
+        if (!$validator->fails()) {
+            $createUser = $this->create($request->all());
+
+            if ($createUser) {
+                Session::flash('success', 'Đăng ký thành viên thành công!');
+                Auth::login($createUser);
+
+                return redirect('/');
+            } else {
+                Session::flash('error', 'Đăng ký thành viên thất bại!');
+                return redirect('register');
+            }
+        }
+
+        return redirect('register')->withErrors($validator)->withInput();
     }
 }
