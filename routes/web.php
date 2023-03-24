@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Social\SocialController;
@@ -28,4 +29,7 @@ Route::prefix('social')->group(function(){
     Route::get('/chinh-sach', [SocialController::class, 'index']);
     Route::get('/auth/{platform}', [SocialController::class, 'redirect'])->name('fb_login');
     Route::get('/callback/{platform}', [SocialController::class, 'callback']);
+});
+Route::prefix('product')->middleware('auth')->group(function(){
+    Route::get('/list-products', [ProductsController::class, 'getProducts'])->name('list_products');
 });
