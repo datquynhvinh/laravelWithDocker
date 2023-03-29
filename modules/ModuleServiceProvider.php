@@ -16,14 +16,25 @@ class ModuleServiceProvider extends ServiceProvider
     {
         $directories = array_map('basename', File::directories(__DIR__));
         foreach ($directories as $moduleName) {
+            // Define configuration
             $configPath = __DIR__ . '/' . $moduleName . '/configs';
             if (File::exists($configPath)) {
-                $configFiles = array_map('base_name', File::allFiles($configPath));
+                $configFiles = array_map('basename', File::allFiles($configPath));
                 foreach ($configFiles as $configFile) {
                     $this->mergeConfigFrom(
-                        $configPath . $configFile, strtolower($moduleName)
+                        $configPath . '/' . $configFile, strtolower($moduleName)
                    );
                 }
+            }
+        }
+
+        // Define middleware
+        $middlewares = [
+            'demo' => Modules\Module1\Http\Middlewares\DemoMiddleware::class,
+        ];
+        if (!empty($middlewares)) {
+            foreach ($middlewares as $key => $middleware) {
+                $this->app['router']->pushMiddlewareToGroup($key, $middleware);
             }
         }
     }
