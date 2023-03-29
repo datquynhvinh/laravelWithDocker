@@ -30,13 +30,18 @@ class ModuleServiceProvider extends ServiceProvider
 
         // Define middleware
         $middlewares = [
-            'demo' => Modules\Module1\Http\Middlewares\DemoMiddleware::class,
+            'demo' => \Modules\Module1\src\Http\Middlewares\DemoMiddleware::class,
         ];
         if (!empty($middlewares)) {
             foreach ($middlewares as $key => $middleware) {
                 $this->app['router']->pushMiddlewareToGroup($key, $middleware);
             }
         }
+
+        // Defineo commands
+        $this->commands([
+            \Modules\Module1\src\Commands\DemoCommand::class,
+        ]);
     }
 
     /**
