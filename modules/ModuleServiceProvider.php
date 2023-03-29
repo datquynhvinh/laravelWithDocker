@@ -14,15 +14,15 @@ class ModuleServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $directories = array_map('basename', File::directories(__DIR__));
-        foreach ($directories as $moduleName) {
+        $modules = $this->getModules();
+        foreach ($modules as $module) {
             // Define configuration
-            $configPath = __DIR__ . '/' . $moduleName . '/configs';
+            $configPath = __DIR__ . '/' . $module . '/configs';
             if (File::exists($configPath)) {
                 $configFiles = array_map('basename', File::allFiles($configPath));
                 foreach ($configFiles as $configFile) {
                     $this->mergeConfigFrom(
-                        $configPath . '/' . $configFile, strtolower($moduleName)
+                        $configPath . '/' . $configFile, strtolower($module)
                    );
                 }
             }
@@ -38,7 +38,7 @@ class ModuleServiceProvider extends ServiceProvider
             }
         }
 
-        // Defineo commands
+        // Define commands
         $this->commands([
             \Modules\Module1\src\Commands\DemoCommand::class,
         ]);
@@ -47,14 +47,22 @@ class ModuleServiceProvider extends ServiceProvider
     /**
      * Register modules according to the directory structure
      *
-     * @return void
+     * @return
      */
     public function boot()
     {
-        $directories = array_map('basename', File::directories(__DIR__));
-        foreach ($directories as $moduleName) {
-            $this->registerModule($moduleName);
+        $modules = $this->getModules();
+        foreach ($modules as $module) {
+            $this->registerModule($module);
         }
+    }
+
+    /**
+     *
+     * @return array
+     */
+    private function getModules() {
+        return array_map('basename', File::directories(__DIR__));
     }
 
     /**
