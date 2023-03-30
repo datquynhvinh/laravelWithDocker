@@ -42,6 +42,10 @@ class ModuleServiceProvider extends ServiceProvider
         $this->commands([
             \Modules\Module1\src\Commands\DemoCommand::class,
         ]);
+
+        $this->app->singleton(
+            \Modules\User\src\Repositories\UserRepository::class
+        );
     }
 
     /**

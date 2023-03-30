@@ -51,9 +51,4 @@ class User extends Authenticatable
     public function getUpdatedAtAttribute($value) {
         return date("Y-m-d H:i:s", strtotime($value));
     }
-
-    public function posts()
-    {
-        return $this->hasMany(Post::class, 'user_id', 'id');
-    }
 }
