@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\ProductsController;
-use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Social\SocialController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Social\SocialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,11 @@ Route::prefix('social')->group(function(){
     Route::get('/auth/{platform}', [SocialController::class, 'redirect'])->name('fb_login');
     Route::get('/callback/{platform}', [SocialController::class, 'callback']);
 });
+
 Route::prefix('products')->middleware('auth')->group(function(){
     Route::get('/list-products', [ProductsController::class, 'getProducts'])->name('list_products');
+});
+
+Route::prefix('/admin')->name('admin.')->group(function(){
+    Route::get('/', [AdminController::class, 'index'])->name('home');
 });
