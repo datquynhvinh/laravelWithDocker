@@ -86,14 +86,14 @@ class ModuleServiceProvider extends ServiceProvider
         // Define languages
         if (File::exists($modulePath . "resources/lang")) {
             // Multi-language by php file
-            $this->loadTranslationsFrom($modulePath . "resources/lang", $moduleName);
+            $this->loadTranslationsFrom($modulePath . "resources/lang", strtolower($moduleName));
             // Multi-language by json file
             $this->loadJSONTranslationsFrom($modulePath . 'resources/lang');
         }
 
         // Define views
         if (File::exists($modulePath . "resources/views")) {
-            $this->loadViewsFrom($modulePath . "resources/views", $moduleName);
+            $this->loadViewsFrom($modulePath . "resources/views", strtolower($moduleName));
         }
 
         // Define helpers

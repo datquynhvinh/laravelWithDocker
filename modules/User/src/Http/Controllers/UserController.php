@@ -9,10 +9,10 @@ class UserController extends Controller
 {
     public function index()
     {
-        return '<h1>User Module</h1>';
+        return view('user::index');
     }
 
     public function detail($id) {
-        return '<h1>User Detail</h1>';
+        return view('user::user-detail');
     }
 }
