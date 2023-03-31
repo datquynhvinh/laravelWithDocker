@@ -36,6 +36,6 @@ Route::prefix('products')->middleware('auth')->group(function(){
     Route::get('/list-products', [ProductsController::class, 'getProducts'])->name('list_products');
 });
 
-Route::prefix('/admin')->name('admin.')->group(function(){
+Route::prefix('/admin')->middleware('auth')->name('admin.')->group(function(){
     Route::get('/', [AdminController::class, 'index'])->name('home');
 });
