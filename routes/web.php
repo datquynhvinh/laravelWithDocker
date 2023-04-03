@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -34,6 +35,9 @@ Route::prefix('social')->group(function(){
 
 Route::prefix('products')->middleware('auth')->group(function(){
     Route::get('/list-products', [ProductsController::class, 'getProducts'])->name('list_products');
+});
+Route::prefix('orders')->group(function(){
+    Route::get('/create', [OrderController::class, 'create']);
 });
 
 Route::prefix('/admin')->middleware('auth')->name('admin.')->group(function(){

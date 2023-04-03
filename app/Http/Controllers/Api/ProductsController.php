@@ -19,7 +19,7 @@ class ProductsController extends Controller
     public function getProducts()
     {
         $products = $this->productRepository->getAll();
-        
+
         return view('product.products', [
             'products' => $products
         ]);

@@ -3,8 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\OrderPayment;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Mail\OrderPaymentEmail;
+use Illuminate\Support\Facades\Mail;
 
 class SendMailAfterOrderPayment
 {
@@ -26,7 +26,17 @@ class SendMailAfterOrderPayment
      */
     public function handle(OrderPayment $event)
     {
-        //
-        return false;
+        $amount = $event->order->amount;
+        $note = $event->order->note;
+
+        $html = "<h1>You have an order to pay </h1>"
+           . "<p>Amount: $amount</p>"
+           . "<p>Note: $note</p>";
+
+        Mail::send([], [], function ($message) use ($html) {
+            $message->to('datlt.mor@gmail.com')
+                ->subject('You have an order to pay')
+                ->setBody($html, 'text/html');
+        });
     }
 }
