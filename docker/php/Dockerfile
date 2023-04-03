@@ -4,7 +4,8 @@ FROM php:${PHP_VERSION}-fpm
 
 WORKDIR /var/www/html
 
-LABEL maintainer="datquynhvinh1231@gmail.com"
+LABEL maintainer="huy.nguyendinh@mor.com.vn"
+LABEL desc="https://morsoftware.com/"
 
 RUN apt update && apt install -y \
     vim \

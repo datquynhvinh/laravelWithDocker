@@ -1,4 +1,5 @@
 version: '3.8'
+
 networks:
     app-network:
         driver: bridge
@@ -6,6 +7,7 @@ networks:
 volumes:
     db-mysql:
         driver: local
+
 services:
     app:
         container_name: ${APP_NAME}-app
@@ -37,7 +39,7 @@ services:
         networks:
             - app-network
     db:
-        image: db:${DB_VERSION}
+        image: mysql:${DB_VERSION}
         container_name: ${APP_NAME}-db
         restart: unless-stopped
         ports:
