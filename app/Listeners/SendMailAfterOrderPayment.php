@@ -5,8 +5,9 @@ namespace App\Listeners;
 use App\Events\OrderPayment;
 use App\Mail\OrderPaymentEmail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendMailAfterOrderPayment
+class SendMailAfterOrderPayment implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -26,6 +27,7 @@ class SendMailAfterOrderPayment
      */
     public function handle(OrderPayment $event)
     {
+        sleep(10);
         $amount = $event->order->amount;
         $note = $event->order->note;
 
