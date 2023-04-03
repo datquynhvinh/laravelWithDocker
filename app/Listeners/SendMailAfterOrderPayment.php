@@ -27,5 +27,6 @@ class SendMailAfterOrderPayment
     public function handle(OrderPayment $event)
     {
         //
+        return false;
     }
 }
