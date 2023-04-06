@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\UserCollection;
 
 class UserController extends Controller
@@ -22,16 +23,20 @@ class UserController extends Controller
 
         return new UserCollection($users, $status);
     }
-     
+
     public function getUserDetail($id)
     {
         $user = User::with('posts')->find($id);
         $user = new UserResource($user);
 
         if (!empty($user)) {
+            $userValue = Cache::remember('user:profile:' . $user->id, config('generate.cache_expiration'), function () use ($user) {
+                return $user;
+            });
+
             return [
                 'status' => 'success',
-                'data' => $user
+                'data' => $userValue,
             ];
         }
 
@@ -69,7 +74,7 @@ class UserController extends Controller
 
         $updateUser = $user->updateOrCreate(
             [
-                'id' => $id, 
+                'id' => $id,
             ],
             [
                 'name' => $request->name,
@@ -108,7 +113,7 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8',
         ];
-    
+
         $message = [
             'name.required' => "Ten bat buoc phai nhap",
             'name.min' => "Ten phai lon hon :min ki tu",

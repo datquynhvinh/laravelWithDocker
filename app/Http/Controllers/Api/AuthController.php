@@ -20,7 +20,7 @@ class AuthController extends Controller
         if ($checkLogin) {
             $client = Client::where('password_client', 1)->first();
             if ($client) {
-                $response = Http::asForm()->post('http://127.0.0.1:8002/oauth/token', [
+                $response = Http::asForm()->post($client->redirect . '/oauth/token', [
                     'grant_type' => 'password',
                     'client_id' => $client->id,
                     'client_secret' => $client->secret,
@@ -51,7 +51,7 @@ class AuthController extends Controller
     public function refreshToken(Request $request)
     {
         $client = Client::where('password_client', 1)->first();
-        $response = Http::asForm()->post('http://127.0.0.1:8002/oauth/token', [
+        $response = Http::asForm()->post($client->redirect . '/oauth/token', [
             'grant_type' => 'refresh_token',
             'refresh_token' => $request->token,
             'client_id' => $client->id,
