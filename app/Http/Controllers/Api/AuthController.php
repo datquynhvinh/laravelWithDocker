@@ -15,7 +15,7 @@ class AuthController extends Controller
         $checkLogin = Auth::attempt([
             'email' => $request->email,
             'password' => $request->password,
-        ]);
+        ], true);
 
         if ($checkLogin) {
             $client = Client::where('password_client', 1)->first();

@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
+Route::get('logout', [AuthController::class, 'logout'])->middleware('auth:api');
 Route::post('refresh-token', [AuthController::class, 'refreshToken']);
 
 Route::post('/users/create', [UserController::class, 'createUser']);

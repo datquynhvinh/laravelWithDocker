@@ -39,7 +39,7 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-    
+
     public function getLogin()
     {
         if (Auth::check()) {
@@ -54,7 +54,7 @@ class LoginController extends Controller
         $checkLogin = Auth::attempt([
             'email' => $request->email,
             'password' => $request->password,
-        ]);
+        ], $request->remember);
 
         if ($checkLogin) {
             return redirect('/');
