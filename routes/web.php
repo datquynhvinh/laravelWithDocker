@@ -20,13 +20,13 @@ use App\Http\Controllers\Social\SocialController;
 |
 */
 
-Route::get('/register', [RegisterController::class, 'getRegister'])->name('register');
-Route::post('/register', [RegisterController::class, 'postRegister'])->name('register');
-Route::get('/login', [LoginController::class, 'getLogin'])->name('login');
-Route::post('/login', [LoginController::class, 'postLogin'])->name('login');
+Route::get('/register', [RegisterController::class, 'getRegister'])->name('get_register');
+Route::post('/register', [RegisterController::class, 'postRegister'])->name('post_register');
+Route::get('/login', [LoginController::class, 'getLogin'])->name('get_login');
+Route::post('/login', [LoginController::class, 'postLogin'])->name('post_login');
 
-Route::prefix('/')->middleware('auth')->group(function() {
-    Route::prefix('/')->middleware('user')->group(function () {
+Route::middleware('auth')->group(function() {
+    Route::middleware('user')->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('dashboard');
         Route::prefix('social')->group(function(){
             Route::get('/chinh-sach', [SocialController::class, 'index']);
