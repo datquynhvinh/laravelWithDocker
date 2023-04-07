@@ -134,4 +134,51 @@ class UserController extends Controller
 
         $request->validate($rule, $message);
     }
+
+    public function getFollowUsers()
+    {
+        $users = $this->userRepository->getFollowUsers();
+
+        return view('users.follow', compact('users'));
+    }
+
+    public function follow(int $id)
+    {
+        /** @var User $loginUser */
+        $loginUser = auth()->user();
+        $followerUser = $this->userRepository->findById($id);
+
+        if (is_null($followerUser)) {
+            // TODO:
+        }
+
+        if ($loginUser->id == $followerUser->id) {
+            return back()->withError("You can't follow yourself");
+        }
+
+        if(!$loginUser->isFollowing($followerUser->id)) {
+            $loginUser->follow($followerUser->id);
+
+            // sending a notification
+            // $user->notify(new UserFollowed($follower));
+
+            return back()->withSuccess("You are now friends with {$followerUser->name}");
+        }
+
+        return back()->withError("You are already following {$followerUser->name}");
+    }
+
+    public function unfollow(int $id)
+    {
+        /** @var User $loginUser */
+        $loginUser = auth()->user();
+        $followerUser = $this->userRepository->findById($id);
+
+        if($loginUser->isFollowing($followerUser->id)) {
+            $loginUser->unfollow($followerUser->id);
+            return back()->withSuccess("You are no longer friends with {$followerUser->name}");
+        }
+
+        return back()->withError("You are not following {$followerUser->name}");
+    }
 }

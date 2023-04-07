@@ -42,11 +42,9 @@ Route::middleware('auth')->group(function() {
             Route::get('/create', [OrderController::class, 'create']);
         });
         Route::prefix('users')->name('users.')->group(function(){
-            Route::post('/create', [UserController::class, 'createUser']);
-            Route::get('/list-users', [UserController::class, 'getUsers']);
-            Route::get('/{id}', [UserController::class, 'getUserDetail']);
-            Route::put('/{id}', [UserController::class, 'updateUser']);
-            Route::delete('/{id}', [UserController::class, 'deleteUser']);
+            Route::get('/follow', [UserController::class, 'getFollowUsers'])->name('follow_users');
+            Route::post('/{id}/follow', [UserController::class, 'follow'])->name('follow');
+            Route::delete('/{id}/unfollow', [UserController::class, 'unfollow'])->name('unfollow');
         });
     });
 

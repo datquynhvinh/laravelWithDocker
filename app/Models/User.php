@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -53,8 +55,65 @@ class User extends Authenticatable
         return date("Y-m-d H:i:s", strtotime($value));
     }
 
-    public function posts()
+    /**
+     * @return HasMany
+     */
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'followers', 'follows_id', 'user_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function follows(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'followers', 'user_id', 'follows_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * @param int $userId
+     * @return \App\Models\User|null
+     */
+    public function follow(int $userId): ?User
+    {
+        $this->follows()->attach($userId);
+
+        return $this->find($userId);
+    }
+
+    /**
+     * @param int $userId
+     * @return \App\Models\User|null
+     */
+    public function unfollow(int $userId): ?User
+    {
+        $this->follows()->detach($userId);
+
+        return $this->find($userId);
+    }
+
+    /**
+     * @param int $userId
+     * @return bool
+     */
+    public function isFollowing(int $userId): bool
+    {
+        $follower = $this->follows()->where('follows_id', $userId)->first();
+        if (!empty($follower)) {
+            return true;
+        }
+
+        return false;
     }
 }
