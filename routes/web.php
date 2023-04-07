@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\User\HomeController;
-use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\User\SocialController;
 use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\User\SocialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,13 @@ Route::middleware('auth')->group(function() {
         });
         Route::prefix('orders')->group(function(){
             Route::get('/create', [OrderController::class, 'create']);
+        });
+        Route::prefix('users')->name('users.')->group(function(){
+            Route::post('/create', [UserController::class, 'createUser']);
+            Route::get('/list-users', [UserController::class, 'getUsers']);
+            Route::get('/{id}', [UserController::class, 'getUserDetail']);
+            Route::put('/{id}', [UserController::class, 'updateUser']);
+            Route::delete('/{id}', [UserController::class, 'deleteUser']);
         });
     });
 

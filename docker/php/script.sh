@@ -25,5 +25,9 @@ php artisan storage:link
 echo
 php artisan optimize
 echo
+php artisan passport:client --password
+echo
+php artisan serv
+echo
 
 php-fpm

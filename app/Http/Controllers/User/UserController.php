@@ -8,20 +8,27 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Resources\UserCollection;
+use App\Repositories\User\UserRepositoryInterface;
 
 class UserController extends Controller
 {
+    protected $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function getUsers()
     {
-        $users = User::with('posts')->paginate();
+        $users = $this->userRepository->getUsers();
 
         $status = 'success';
         if (empty($users)) {
             $status = 'no_record';
         }
 
-        return new UserCollection($users, $status);
+        return view('users.index', compact('users'));
     }
 
     public function getUserDetail($id)
