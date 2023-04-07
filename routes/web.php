@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function() {
             Route::get('/follow', [UserController::class, 'getFollowUsers'])->name('follow_users');
             Route::post('/{id}/follow', [UserController::class, 'follow'])->name('follow');
             Route::delete('/{id}/unfollow', [UserController::class, 'unfollow'])->name('unfollow');
+            Route::get('/notifications', [UserController::class, 'getNotifications'])->name('notifications');
         });
     });
 

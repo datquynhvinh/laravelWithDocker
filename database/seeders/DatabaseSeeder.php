@@ -26,10 +26,18 @@ class DatabaseSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
         DB::table('users')->insertOrIgnore([
-            'name' => 'Le Thac Dat',
+            'name' => 'Le Thac Dat1',
             'email' => 'datquynhvinh12311@gmail.com',
             'password' => Hash::make('anhdat11'),
-            'role_id' => 2,
+            'role_id' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+        DB::table('users')->insertOrIgnore([
+            'name' => 'Le Thac Dat2',
+            'email' => 'lethacdat@gmail.com',
+            'password' => Hash::make('anhdat11'),
+            'role_id' => 0,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);

@@ -4,10 +4,13 @@ namespace App\Http\Controllers\User;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Notifications\UserFollowed;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Notification;
 use App\Repositories\User\UserRepositoryInterface;
 
 class UserController extends Controller
@@ -160,7 +163,7 @@ class UserController extends Controller
             $loginUser->follow($followerUser->id);
 
             // sending a notification
-            // $user->notify(new UserFollowed($follower));
+            Notification::send($followerUser, new UserFollowed($loginUser));
 
             return back()->withSuccess("You are now friends with {$followerUser->name}");
         }
@@ -180,5 +183,13 @@ class UserController extends Controller
         }
 
         return back()->withError("You are not following {$followerUser->name}");
+    }
+
+    public function getNotifications()
+    {
+        /** @var User $loginUser */
+        $loginUser = Auth::user();
+
+        return $loginUser->unreadNotifications()->limit(5)->get()->toArray();
     }
 }
