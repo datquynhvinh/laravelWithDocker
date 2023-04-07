@@ -1,13 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Social\SocialController;
+use App\Http\Controllers\User\SocialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +26,7 @@ Route::get('/login', [LoginController::class, 'getLogin'])->name('get_login');
 Route::post('/login', [LoginController::class, 'postLogin'])->name('post_login');
 
 Route::middleware('auth')->group(function() {
+    // Route user
     Route::middleware('user')->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('dashboard');
         Route::prefix('social')->group(function(){
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function() {
         });
     });
 
+    // Route admin
     Route::prefix('/admin')->middleware('admin')->name('admin.')->group(function(){
         Route::get('/', [AdminController::class, 'index'])->name('home');
     });
