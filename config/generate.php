@@ -6,4 +6,5 @@ return [
         'admin' => 1,
     ],
     'cache_expiration' => 120,
+    'notification_expiration' => 1200,
 ];

@@ -68,6 +68,36 @@
                                     </a>
                                 </div>
                             </li>
+                            <li class="nav-item dropdown">
+                                <a id="notifications" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Notifications
+                                </a>
+                                @php
+                                    $userNotiCache = 'notifications:' . Auth::user()->id
+                                @endphp
+                                @if (cache()->has($userNotiCache) && !empty(cache($userNotiCache)))
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="notifications">
+                                        @foreach (cache($userNotiCache) as $notification)
+                                            @php
+                                                $notificationId = $notification['id'];
+                                            @endphp
+                                            <a class="dropdown-item" href="{{ route('users.follow_users',
+                                                [
+                                                    'read' => $notificationId,
+                                                    'user_id' => Auth::user()->id
+                                                ]) }}">
+                                                {{ $notification['data']['message'] }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="notifications">
+                                        <a class="dropdown-item">
+                                            No have notifications
+                                        </a>
+                                    </div>
+                                @endif
+                            </li>
                         @endguest
                     </ul>
                 </div>

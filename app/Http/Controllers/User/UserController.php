@@ -138,9 +138,12 @@ class UserController extends Controller
         $request->validate($rule, $message);
     }
 
-    public function getFollowUsers()
+    public function getFollowUsers(Request $request)
     {
         $users = $this->userRepository->getFollowUsers();
+        if (!empty($request->get('user_id'))) {
+            $this->refreshNotifications($request->get('user_id'));
+        }
 
         return view('users.follow', compact('users'));
     }
@@ -164,6 +167,7 @@ class UserController extends Controller
 
             // sending a notification
             Notification::send($followerUser, new UserFollowed($loginUser));
+            $this->refreshNotifications($followerUser->id);
 
             return back()->withSuccess("You are now friends with {$followerUser->name}");
         }
@@ -185,11 +189,14 @@ class UserController extends Controller
         return back()->withError("You are not following {$followerUser->name}");
     }
 
-    public function getNotifications()
+    public function refreshNotifications(int $userId)
     {
         /** @var User $loginUser */
-        $loginUser = Auth::user();
+        $user = $this->userRepository->findById($userId);
 
-        return $loginUser->unreadNotifications()->limit(5)->get()->toArray();
+        Cache::flush();
+        Cache::remember('notifications:' . $user->id, config('generate.notification_expiration'), function () use ($user) {
+            return $user->unreadNotifications()->limit(5)->get()->toArray();
+        });
     }
 }

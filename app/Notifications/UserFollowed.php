@@ -46,6 +46,7 @@ class UserFollowed extends Notification implements ShouldQueue
         return [
             'follower_id' => $this->followerUser->id,
             'follower_name' => $this->followerUser->name,
+            'message' => $this->followerUser->name . ' followed you.',
         ];
     }
 
