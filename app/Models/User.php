@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Post;
+use App\Models\Notification;
+use Laravel\Passport\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
-use App\Models\Post;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class User extends Authenticatable
 {
@@ -87,6 +89,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(self::class, 'followers', 'user_id', 'follows_id')
             ->withTimestamps();
+    }
+
+    /**
+     * @return MorphMany
+     */
+    public function notifications(): MorphMany
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
     }
 
     /**

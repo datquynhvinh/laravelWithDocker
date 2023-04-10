@@ -73,20 +73,17 @@
                                     Notifications
                                 </a>
                                 @php
-                                    $userNotiCache = 'notifications:' . Auth::user()->id
+                                    $notifications = Auth::user()->load('notifications')->notifications->whereNull('read_at');
                                 @endphp
-                                @if (cache()->has($userNotiCache) && !empty(cache($userNotiCache)))
+                                @if ($notifications->isNotEmpty())
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="notifications">
-                                        @foreach (cache($userNotiCache) as $notification)
-                                            @php
-                                                $notificationId = $notification['id'];
-                                            @endphp
+                                        @foreach ($notifications as $notification)
                                             <a class="dropdown-item" href="{{ route('users.follow_users',
                                                 [
-                                                    'read' => $notificationId,
-                                                    'user_id' => Auth::user()->id
+                                                    'read' => $notification->id,
+                                                    'user_id' => $notification->notifiable_id,
                                                 ]) }}">
-                                                {{ $notification['data']['message'] }}
+                                                {{ json_decode($notification->data)->message }}
                                             </a>
                                         @endforeach
                                     </div>
