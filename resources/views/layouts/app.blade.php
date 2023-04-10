@@ -80,8 +80,7 @@
                                         @foreach ($notifications as $notification)
                                             <a class="dropdown-item" href="{{ route('users.follow_users',
                                                 [
-                                                    'read' => $notification->id,
-                                                    'user_id' => $notification->notifiable_id,
+                                                    'read' => $notification->id
                                                 ]) }}">
                                                 {{ json_decode($notification->data)->message }}
                                             </a>
