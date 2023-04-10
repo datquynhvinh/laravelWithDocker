@@ -19,7 +19,7 @@ class MarkNotificationAsRead
         if($request->has('read')) {
             $notification = $request->user()->notifications()->where('id', $request->read)->first();
             if($notification) {
-                $notification->markAsRead($notification);
+                $notification->markAsRead();
             }
         }
 

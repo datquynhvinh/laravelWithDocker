@@ -82,7 +82,7 @@
                                                 [
                                                     'read' => $notification->id
                                                 ]) }}">
-                                                {{ json_decode($notification->data)->message }}
+                                                {{ $notification->data['message'] }}
                                             </a>
                                         @endforeach
                                     </div>

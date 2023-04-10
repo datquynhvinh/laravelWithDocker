@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Post;
-use App\Models\Notification;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\DatabaseNotification;
@@ -96,7 +95,7 @@ class User extends Authenticatable
      */
     public function notifications(): MorphMany
     {
-        return $this->morphMany(Notification::class, 'notifiable');
+        return $this->morphMany(DatabaseNotification::class, 'notifiable');
     }
 
     /**
