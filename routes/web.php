@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\User\SocialController;
 use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\User\ChatBoxController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,11 +42,18 @@ Route::middleware('auth')->group(function() {
         Route::prefix('orders')->group(function(){
             Route::get('/create', [OrderController::class, 'create']);
         });
-        Route::prefix('users')->name('users.')->group(function(){
+        Route::prefix('users')->name('users.')->group(function() {
+            Route::get('/user-info', [UserController::class, 'getUserLogin']);
             Route::get('/follow', [UserController::class, 'getFollowUsers'])->name('follow_users');
             Route::post('/{id}/follow', [UserController::class, 'follow'])->name('follow');
             Route::delete('/{id}/unfollow', [UserController::class, 'unfollow'])->name('unfollow');
             Route::get('/refresh-notifications', [UserController::class, 'refreshNotifications'])->name('notifications');
+            Route::get('/chatbox', [UserController::class, 'chatbox'])->name('chatbox');
+        });
+        Route::prefix('chatbox')->name('chat.')->group(function(){
+            Route::get('/', [ChatBoxController::class, 'index'])->name('dashboard');
+            Route::get('/messages', [ChatBoxController::class, 'getMessages']);
+            Route::post('/messages', [ChatBoxController::class, 'postMessages']);
         });
     });
 

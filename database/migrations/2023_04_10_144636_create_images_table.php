@@ -20,7 +20,8 @@ class CreateImagesTable extends Migration
             $table->integer('size');
             $table->string('ext', 20);
             $table->morphs('imageable');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

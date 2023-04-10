@@ -22,6 +22,11 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
+    public function getUserLogin()
+    {
+        return Auth::user();
+    }
+
     public function getUsers()
     {
         $users = $this->userRepository->getUsers();

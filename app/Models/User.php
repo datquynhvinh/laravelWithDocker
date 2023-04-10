@@ -103,9 +103,17 @@ class User extends Authenticatable
     /**
      * @return MorphOne
      */
-    public function images(): MorphOne
+    public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
     }
 
     /**
