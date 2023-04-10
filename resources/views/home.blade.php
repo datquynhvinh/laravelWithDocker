@@ -102,8 +102,8 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <ul class="list-unstyled mb-0">
-                                    <li><a href="{{ route('list_products') }}">Products</a></li>
-                                    <li><a href="#!">HTML</a></li>
+                                    <li><a href="{{ route('products.list_products') }}">Products</a></li>
+                                    <li><a href="{{ route('users.follow_users') }}">Follows</a></li>
                                     <li><a href="#!">Freebies</a></li>
                                 </ul>
                             </div>
@@ -111,7 +111,7 @@
                                 <ul class="list-unstyled mb-0">
                                     <li><a href="#!">JavaScript</a></li>
                                     <li><a href="#!">CSS</a></li>
-                                    <li><a href="#!">Tutorials</a></li>
+                                    <li><a href="#!">HTML</a></li>
                                 </ul>
                             </div>
                         </div>

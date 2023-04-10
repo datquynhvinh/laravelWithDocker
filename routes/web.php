@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function() {
             Route::get('/auth/{platform}', [SocialController::class, 'redirect'])->name('fb_login');
             Route::get('/callback/{platform}', [SocialController::class, 'callback']);
         });
-        Route::prefix('products')->middleware('auth')->group(function(){
+        Route::prefix('products')->name('products.')->middleware('auth')->group(function(){
             Route::get('/list-products', [ProductsController::class, 'getProducts'])->name('list_products');
         });
         Route::prefix('orders')->group(function(){
