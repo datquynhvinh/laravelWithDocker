@@ -27,6 +27,7 @@ class User extends Authenticatable
         'provider',
         'provider_id',
         'role_id',
+        'group_id',
     ];
 
     /**
@@ -48,10 +49,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * The attributes that should be converted date format
+     */
     public function getCreatedAtAttribute($value) {
         return date("Y-m-d H:i:s", strtotime($value));
     }
 
+    /**
+     * The attributes that should be converted date format
+     */
     public function getUpdatedAtAttribute($value) {
         return date("Y-m-d H:i:s", strtotime($value));
     }
