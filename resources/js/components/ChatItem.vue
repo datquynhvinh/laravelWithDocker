@@ -1,5 +1,5 @@
 <template>
-	<div class="message">
+	<div class="message" :class="{'is-current-user': $root.currentUserLogin.id === message.user.id}">
 		<div class="message-item user-name">
 			{{ message.user.name}}
 		</div>

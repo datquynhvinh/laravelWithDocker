@@ -5430,7 +5430,10 @@ var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
-    staticClass: "message"
+    staticClass: "message",
+    "class": {
+      "is-current-user": _vm.$root.currentUserLogin.id === _vm.message.user.id
+    }
   }, [_c("div", {
     staticClass: "message-item user-name"
   }, [_vm._v("\n\t\t" + _vm._s(_vm.message.user.name) + "\n\t")]), _vm._v(" "), _c("div", {
