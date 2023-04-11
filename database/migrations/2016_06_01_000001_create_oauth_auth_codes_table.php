@@ -32,9 +32,9 @@ return new class() extends Migration
      */
     public function down()
     {
-        $schema = Schema::connection($this->getConnection());
+        // $schema = Schema::connection($this->getConnection());
 
-        $schema->dropIfExists('oauth_auth_codes');
+        // $schema->dropIfExists('oauth_auth_codes');
     }
 
     /**

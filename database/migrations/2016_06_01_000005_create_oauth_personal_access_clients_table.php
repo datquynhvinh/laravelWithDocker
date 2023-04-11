@@ -29,9 +29,9 @@ return new class() extends Migration
      */
     public function down()
     {
-        $schema = Schema::connection($this->getConnection());
+        // $schema = Schema::connection($this->getConnection());
 
-        $schema->dropIfExists('oauth_personal_access_clients');
+        // $schema->dropIfExists('oauth_personal_access_clients');
     }
 
     /**

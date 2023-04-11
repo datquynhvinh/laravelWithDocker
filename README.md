@@ -26,17 +26,11 @@
 - Username: admin
 - Password: admin
 
-## Commandline
+## Command line
 - docker exec -it Laravel-app bash
 
 ## Password Grant Tokens
 - php artisan passport:client --password
 - generate development to redirect: php artisan serv
 
-## Redis server configuration
-- Install: sudo apt-get -y install redis-server
-- Check status: sudo service redis-server status
-- Or start redis: sudo service redis-server start
-- Use command line: redis-cli
-- Set a Password: nano /etc/redis/6379.conf => requirepass somePassword
-- REDIS_HOST using ipv4
+
