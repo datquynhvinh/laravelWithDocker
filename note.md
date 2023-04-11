@@ -13,3 +13,9 @@
 ## Error handling 502 bad gateway
 - /usr/bin/php -S 0.0.0.0:9000
 - telnet app 9000
+
+## Install channel chat realtime
+- php artisan serve
+- npm run watch (open in another terminal tab)
+- php artisan queue:work (open in another terminal tab)
+- laravel-echo-server start (open in another terminal tab)

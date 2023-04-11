@@ -39,7 +39,7 @@ class ChatBoxController extends Controller
             'user_id' => $user->id,
         ]);
 
-        // broadcast(new MessagePosted($createMessage, $user))->toOthers();
+        broadcast(new MessagePosted($createMessage, $user))->toOthers();
 
         if ($createMessage) {
             return $createMessage->load('user');
