@@ -20,7 +20,7 @@
             default: {}
           }
         }
-	}
+    }
 </script>
 
 <style lang="scss" scoped>
@@ -35,6 +35,6 @@
 		padding-bottom: 20px;
 	}
 	.is-current-user {
-		color: #a900ff;
+		color: #f55e6c;
 	}
 </style>

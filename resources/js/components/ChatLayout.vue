@@ -19,7 +19,7 @@
 </template>
 
 <script>
-    import ChatItem from './ChatItem.vue'
+import ChatItem from './ChatItem.vue'
     export default {
         components: {
             ChatItem
@@ -47,7 +47,7 @@
                     const response = await axios.post('/chatbox/messages', {
                         message: this.message
                     })
-                    this.list_messages.push(response.data.message)
+                    this.list_messages.push(response.data)
                     this.message = ''
                 } catch (error) {
                     console.log(error)
