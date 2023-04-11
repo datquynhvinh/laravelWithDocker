@@ -4,7 +4,7 @@
             <div class="chat-title">
                 <h1>Chatroom</h1>
             </div>
-            <div class="messages">
+            <div class="messages" id="content">
                 <div class="messages-content">
                     <ChatItem v-for="(message, index) in list_messages" :key="index" :message="message"></ChatItem>
                 </div>
@@ -32,6 +32,13 @@ import ChatItem from './ChatItem.vue'
         },
         created () {
             this.loadMessage()
+            Echo.channel('Laravel_database_chatroom')
+            .listen('MessagePosted', (data) => {
+                console.log(data)
+                let message = data.message
+                message.user = data.user
+                this.list_messages.push(message)
+            })
         },
         methods: {
             async loadMessage() {

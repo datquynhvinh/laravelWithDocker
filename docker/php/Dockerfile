@@ -2,7 +2,7 @@ ARG PHP_VERSION
 
 FROM php:${PHP_VERSION}-fpm
 
-WORKDIR /var/www/html
+WORKDIR /var/www
 RUN chown -R www-data:www-data /var/www
 
 LABEL maintainer="datlt.mor@gmail.com"

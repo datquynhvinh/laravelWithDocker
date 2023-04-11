@@ -21,6 +21,20 @@ class Message extends Model
     ];
 
     /**
+     * The attributes that should be converted date format
+     */
+    public function getCreatedAtAttribute($value) {
+        return date("Y-m-d H:i:s", strtotime($value));
+    }
+
+    /**
+     * The attributes that should be converted date format
+     */
+    public function getUpdatedAtAttribute($value) {
+        return date("Y-m-d H:i:s", strtotime($value));
+    }
+
+    /**
      * @return BelongsTo
      */
     public function user(): BelongsTo

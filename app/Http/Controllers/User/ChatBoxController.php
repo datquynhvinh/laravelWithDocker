@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\User;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Events\MessagePosted;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Message\MessageRepositoryInterface;
@@ -28,6 +30,7 @@ class ChatBoxController extends Controller
 
     public function postMessages(Request $request)
     {
+        /** @var \App\Models\User() */
         $user = Auth::user();
         $dataRequest = $request->all();
 
@@ -35,6 +38,8 @@ class ChatBoxController extends Controller
             'message' => $dataRequest['message'],
             'user_id' => $user->id,
         ]);
+
+        // broadcast(new MessagePosted($createMessage, $user))->toOthers();
 
         if ($createMessage) {
             return $createMessage->load('user');

@@ -53,3 +53,13 @@ services:
             - db-mysql:/var/lib/mysql
         networks:
             - app-network
+    redis:
+        image: redis:alpine
+        container_name: ${APP_NAME}-redis
+        restart: unless-stopped
+        volumes:
+            - .docker/redis:/data
+        ports:
+            - "8090:6379"
+        networks:
+            - app-network

@@ -32,5 +32,3 @@
 ## Password Grant Tokens
 - php artisan passport:client --password
 - generate development to redirect: php artisan serv
-
-
