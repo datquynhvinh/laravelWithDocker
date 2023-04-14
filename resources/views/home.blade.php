@@ -104,7 +104,7 @@
                                 <ul class="list-unstyled mb-0">
                                     <li><a href="{{ route('products.list_products') }}">Products</a></li>
                                     <li><a href="{{ route('users.follow_users') }}">Follows</a></li>
-                                    <li><a href="#!">Freebies</a></li>
+                                    <li><a href="{{ route('chat.dashboard') }}">Chatbox</a></li>
                                 </ul>
                             </div>
                             <div class="col-sm-6">

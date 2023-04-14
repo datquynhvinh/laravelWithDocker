@@ -32,3 +32,6 @@
 ## Password Grant Tokens
 - php artisan passport:client --password
 - generate development to redirect: php artisan serv
+
+# Laravel echo server documentation
+- https://github.com/tlaverdure/laravel-echo-server#http-api

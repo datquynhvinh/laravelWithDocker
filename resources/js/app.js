@@ -1,3 +1,4 @@
+import laravelEchoServer from '../../laravel-echo-server.json'
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -24,7 +25,11 @@ Vue.component('chat-layout', require('./components/ChatLayout.vue').default)
 const app = new Vue({
     el: '#app',
     data: {
-        currentUserLogin: {}
+        currentUserLogin: {},
+        echoCredentials: {
+            appId: laravelEchoServer.clients[0].appId,
+            key: laravelEchoServer.clients[0].key
+        }
     },
     created() {
         this.getCurrentUserLogin()
