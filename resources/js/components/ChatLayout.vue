@@ -6,12 +6,9 @@
                 </button>
         </div>
         <div class="btn-logout">
-            <a class="btn btn-danger" href="/logout" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                    Logout
-                </a>
-            <form id="logout-form" action="/logout" method="POST" style="display: none;">
-                <input type="hidden" name="_token" :value="csrfToken">
-            </form>
+            <a class="btn btn-danger" href="/logout">
+                Logout
+            </a>
         </div>
         <div class="chat">
             <div class="chat-title">
@@ -44,7 +41,8 @@ export default {
             message: "",
             list_messages: [],
             csrfToken: '',
-            usersOnline: 0
+            usersOnline: 0,
+            logoutRoute: `${window.location.origin}/logout`
         }
     },
     created() {
