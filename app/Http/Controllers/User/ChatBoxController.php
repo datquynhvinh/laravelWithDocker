@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Chatroom;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Events\MessagePosted;
@@ -35,16 +36,29 @@ class ChatBoxController extends Controller
         $dataRequest = $request->all();
 
         $createMessage = $this->messageRepository->create([
-            'message' => $dataRequest['message'],
+            'room' => $dataRequest['room'] ?? '',
+            'message' => $dataRequest['message'] ?? '',
             'user_id' => $user->id,
         ]);
 
-        broadcast(new MessagePosted($createMessage, $user))->toOthers();
+        broadcast(new MessagePosted($createMessage))->toOthers();
 
         if ($createMessage) {
             return $createMessage->load('user');
         }
 
         return false;
+    }
+
+    public function chatRoom()
+    {
+        $data = [
+            'user' => Auth::user(),
+            'rooms' => Chatroom::all(),
+        ];
+
+        return view('chatbox.chat_room', [
+            'data' => $data
+        ]);
     }
 }

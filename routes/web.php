@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function() {
             Route::get('/', [ChatBoxController::class, 'index'])->name('dashboard');
             Route::get('/messages', [ChatBoxController::class, 'getMessages']);
             Route::post('/messages', [ChatBoxController::class, 'postMessages']);
+            Route::get('/{any}', [ChatBoxController::class, 'chatRoom'])->where('any', '.*');
         });
     });
 

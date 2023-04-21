@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Chatroom;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Message extends Model
 {
@@ -16,8 +17,10 @@ class Message extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'room',
         'message',
-        'user_id'
+        'user_id',
+        'receiver_id',
     ];
 
     /**
@@ -40,5 +43,19 @@ class Message extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function receiver () {
+        return $this->belongsTo(User::class, 'receiver_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function room () {
+        return $this->belongsTo(Chatroom::class, 'room');
     }
 }

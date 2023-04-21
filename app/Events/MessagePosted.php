@@ -22,12 +22,10 @@ class MessagePosted implements ShouldBroadcast
      * @return void
      */
     public $message;
-    public $user;
 
-    public function __construct(Message $message, User $user)
+    public function __construct(Message $message)
     {
         $this->message = $message;
-        $this->user = $user;
     }
 
     /**
@@ -37,6 +35,6 @@ class MessagePosted implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('chatroom');
+        return new PrivateChannel('room.'.$this->message->room);
     }
 }
