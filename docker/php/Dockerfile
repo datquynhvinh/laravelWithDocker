@@ -26,8 +26,8 @@ RUN docker-php-ext-enable pdo_mysql
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
-#RUN usermod -u 1000 www-data
-#RUN groupmod -g 1000 www-data
+RUN usermod -u 1000 www-data
+RUN groupmod -g 1000 www-data
 #USER www-data:www-data
 
 CMD ["/var/www/html/docker/php/script.sh"]
