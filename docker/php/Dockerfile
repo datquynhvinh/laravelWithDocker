@@ -1,11 +1,7 @@
-ARG PHP_VERSION
-
-FROM php:${PHP_VERSION}-fpm
+FROM php:8.2.9-fpm
 
 WORKDIR /var/www
-RUN chown -R www-data:www-data /var/www
-
-LABEL maintainer="datlt.mor@gmail.com"
+RUN chown -R www-data:www-data /var/www/html
 
 RUN apt update && apt install -y \
     vim \
@@ -13,6 +9,9 @@ RUN apt update && apt install -y \
     unzip\
     libmagickwand-dev\
     imagemagick
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash
 RUN apt-get -y install nodejs
